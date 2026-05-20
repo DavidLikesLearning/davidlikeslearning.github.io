@@ -122,19 +122,20 @@ a:hover { opacity: 0.7; }
   margin-bottom: 14px;
 }
 
-#hero-sub1 {
-  font-size: 0.95rem;
-  color: var(--text);
-  margin-bottom: 6px;
-  letter-spacing: 0.2px;
-}
-
+#hero-sub1,
 #hero-sub2 {
   font-size: 0.95rem;
   color: var(--text);
-  margin-bottom: 40px;
   letter-spacing: 0.2px;
+  display: inline-block;
+  background: rgba(250, 248, 244, 0.82);
+  backdrop-filter: blur(4px);
+  padding: 3px 10px;
+  border-radius: 4px;
 }
+
+#hero-sub1 { margin-bottom: 6px; }
+#hero-sub2 { margin-bottom: 40px; }
 
 #hero-links {
   display: flex;
