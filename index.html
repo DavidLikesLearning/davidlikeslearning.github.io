@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>David J F R: Energy Math for Public Good</title>
-  <meta name="description" content="David J Florez Rodriguez — Energy Math for Public Good.">
+  <title>David J Florez Rodriguez — Energy &amp; Math for the Common Good</title>
+  <meta name="description" content="Personal site of David J Florez Rodriguez — researcher working on energy systems, sustainability, and education.">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -13,13 +13,16 @@
 </head>
 <body>
 
+  <!-- Skip link for keyboard/screen-reader users -->
+  <a href="#main-content" id="skip-link">Skip to main content</a>
+
   <!-- Loading -->
-  <div id="loading"><div id="spinner"></div></div>
+  <div id="loading" aria-hidden="true"><div id="spinner"></div></div>
 
   <!-- Header -->
   <header id="header" class="animate__animated animate__slideInDown">
-    <div id="title">Energy, Math for the Public Good</div>
-    <nav id="links">
+    <div id="title" aria-label="Site title: Energy and Math for the Common Good">Energy &amp; Math for the Common Good</div>
+    <nav id="links" aria-label="Main navigation">
       <a href="#research">research</a>
       <a href="#awards">awards</a>
       <a href="#projects">projects</a>
@@ -28,28 +31,30 @@
     </nav>
   </header>
 
+  <main id="main-content">
+
   <!-- Hero -->
   <section id="hero">
     <div id="hero-content" class="animate__animated animate__zoomIn">
-      <p id="greeting">hi, i'm</p>
-      <h1 id="hero-name">David J Florez Rodriguez</h1>
-      <p id="hero-tagline">Optimization &amp; Sustainability</p>
+      <h1 id="greeting">Hello :) thanks for visiting</h1>
+      <p id="hero-sub1">I'm David (J Florez Rodriguez)</p>
+      <p id="hero-sub2">I care about energy systems, preserving nature, and education</p>
       <div id="hero-links">
         <a href="https://docs.google.com/document/d/1WzhuwzJtMpMYLAZ9Hj29LoXPa4Nq9bv6/preview"
            target="_blank" rel="noopener" class="btn-primary">
-          <i class="fas fa-file-alt"></i> curriculum vitae
+          <i class="fas fa-file-alt" aria-hidden="true"></i> curriculum vitae
         </a>
         <a href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en"
            target="_blank" rel="noopener" class="btn-secondary">
-          <i class="fas fa-graduation-cap"></i> google scholar
+          <i class="fas fa-graduation-cap" aria-hidden="true"></i> google scholar
         </a>
         <a href="https://github.com/DavidLikesLearning"
            target="_blank" rel="noopener" class="btn-secondary">
-          <i class="fab fa-github"></i> github
+          <i class="fab fa-github" aria-hidden="true"></i> github
         </a>
         <a href="https://www.linkedin.com/in/sirdavidjflorez/"
            target="_blank" rel="noopener" class="btn-secondary">
-          <i class="fab fa-linkedin"></i> linkedin
+          <i class="fab fa-linkedin" aria-hidden="true"></i> linkedin
         </a>
       </div>
     </div>
@@ -221,18 +226,20 @@
         <i class="fas fa-envelope"></i> davidenergy [at] cmu [dot] edu
       </span>
       <div id="social-links">
-        <a href="https://github.com/DavidLikesLearning" target="_blank" rel="noopener" title="GitHub">
-          <i class="fab fa-github"></i>
+        <a href="https://github.com/DavidLikesLearning" target="_blank" rel="noopener" aria-label="GitHub profile">
+          <i class="fab fa-github" aria-hidden="true"></i>
         </a>
-        <a href="https://www.linkedin.com/in/sirdavidjflorez/" target="_blank" rel="noopener" title="LinkedIn">
-          <i class="fab fa-linkedin-in"></i>
+        <a href="https://www.linkedin.com/in/sirdavidjflorez/" target="_blank" rel="noopener" aria-label="LinkedIn profile">
+          <i class="fab fa-linkedin-in" aria-hidden="true"></i>
         </a>
-        <a href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener" title="Google Scholar">
-          <i class="fas fa-graduation-cap"></i>
+        <a href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener" aria-label="Google Scholar profile">
+          <i class="fas fa-graduation-cap" aria-hidden="true"></i>
         </a>
       </div>
     </div>
   </section>
+
+  </main>
 
   <footer id="footer">
     David J Florez Rodriguez &middot;
