@@ -206,6 +206,7 @@ section { padding: 100px 0; background: rgba(250, 248, 244, 0.93); }
 .section-sub a { font-size: 0.88rem; }
 
 #research, #volunteering, #awards { background: rgba(240, 235, 227, 0.93); }
+#background { background: rgba(250, 248, 244, 0.96); }
 #hero { background: transparent; }
 
 /* ── Cards ───────────────────────────────────── */
@@ -287,6 +288,18 @@ section { padding: 100px 0; background: rgba(250, 248, 244, 0.93); }
   padding: 3px 10px;
   border-radius: 20px;
 }
+
+/* ── Background / Bio ────────────────────────── */
+#bio {
+  max-width: 640px;
+}
+#bio p {
+  font-size: 1.05rem;
+  color: var(--text);
+  line-height: 1.85;
+  margin-bottom: 1.2em;
+}
+#bio p:last-child { margin-bottom: 0; }
 
 /* ── Awards ──────────────────────────────────── */
 .award-grid {
