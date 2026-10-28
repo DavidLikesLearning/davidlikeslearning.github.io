@@ -88,7 +88,96 @@
           </div>
 
           <div class="deep-section-title">the deeper dive</div>
-          <div class="construction-note">🚧 In construction: a walkthrough of these models and results is coming soon.</div>
+          <p class="tab-intro" style="margin-bottom: 18px;">
+            <strong>An imaginary grid:</strong> these five nodes sit at the real locations of five cities across four countries, but the
+            power plants, the transmission lines between them, and every MW figure are invented for this demo, not the actual Colombian grid.
+            Two hydro reservoirs you can dial up or down sit at Panama City and at Ibarra, Ecuador, both included mainly to give the layout
+            some breathing room. Punto Fijo, on Venezuela's windy Paraguaná Peninsula, hosts a fixed wind injection (no curtailment
+            modeled), and Bogotá and Cali, Colombia's two biggest cities after Medellín, are the load centers, tied together by five
+            made-up lines, each with its own thermal limit. Dial the hydro plants down and see whether the rest of the grid can still
+            cover demand. Turn the Panama City&ndash;Cali line off and watch flow reroute onto the Ibarra&ndash;Cali line, maybe past what
+            it can carry, the same kind of tradeoff the line-switching work above looks for automatically. Each plant also carries a made-up
+            $/MWh cost, the Panama City&ndash;Cali line has its own wheeling fee, and any shortfall or surplus Bogotá quietly trades with the
+            rest of the grid is priced too, all tallied east of the map, so you can go looking for the cheapest way to meet demand yourself.
+          </p>
+          <div class="chart-wrap" id="pf-wrap">
+            <div id="pf-controls">
+              <label class="pf-slider" for="pf-slider-panamacity">Panama City: <output id="pf-slider-panamacity-value">80</output> MW
+                <input type="range" id="pf-slider-panamacity" min="60" max="100" step="10" value="80">
+              </label>
+              <label class="pf-slider" for="pf-slider-ibarra">Ibarra: <output id="pf-slider-ibarra-value">80</output> MW
+                <input type="range" id="pf-slider-ibarra" min="60" max="100" step="10" value="80">
+              </label>
+              <button type="button" class="pf-toggle" id="pf-toggle-line" aria-pressed="true">Panama City&ndash;Cali line: <span>ON</span></button>
+            </div>
+            <div id="pf-diagram-row">
+            <svg id="pf-svg" viewBox="0 0 560 380" role="img" aria-label="Diagram of an imaginary power network over 5 real cities in Colombia, Panama, Ecuador, and Venezuela, with toggleable hydro plants and a toggleable line">
+              <path id="pf-map-colombia" d="M 230.4,275.8 L 221.7,271.0 L 211.8,264.2 L 206.0,267.5 L 188.8,264.6 L 183.8,255.9 L 180.0,256.2 L 159.7,244.6 L 156.9,238.3 L 164.5,236.8 L 163.6,226.6 L 168.4,219.3 L 178.5,217.9 L 187.0,205.1 L 194.8,194.5 L 187.3,189.6 L 191.1,177.8 L 186.6,159.3 L 190.9,153.9 L 187.7,136.7 L 179.5,125.9 L 182.1,116.0 L 188.6,117.5 L 192.5,111.5 L 187.7,99.5 L 190.2,96.5 L 200.7,97.2 L 215.9,83.0 L 224.3,80.8 L 224.5,74.1 L 228.3,56.9 L 239.9,47.5 L 252.7,47.1 L 254.3,42.9 L 270.2,44.6 L 286.2,34.3 L 294.1,29.8 L 304.0,20.0 L 311.2,21.2 L 316.5,26.6 L 312.5,33.4 L 299.5,36.8 L 294.3,47.0 L 286.5,52.8 L 280.6,60.4 L 278.1,74.9 L 272.5,86.7 L 282.9,88.1 L 285.5,97.4 L 290.0,101.9 L 291.6,110.1 L 289.2,117.6 L 289.9,121.9 L 294.9,123.5 L 299.8,130.6 L 325.9,128.7 L 337.7,131.3 L 352.0,148.8 L 360.2,146.6 L 374.8,147.7 L 386.4,145.4 L 393.6,148.8 L 390.0,159.8 L 385.4,166.6 L 383.8,181.2 L 387.9,194.7 L 393.7,200.7 L 394.4,205.3 L 384.1,215.4 L 391.5,219.8 L 396.9,227.0 L 403.1,247.2 L 399.2,249.7 L 395.3,237.7 L 389.6,231.3 L 382.9,238.3 L 343.3,237.8 L 343.6,250.6 L 355.5,252.7 L 354.8,260.4 L 350.7,258.3 L 339.3,261.7 L 339.2,276.4 L 348.2,283.9 L 351.4,295.5 L 350.9,304.3 L 341.8,360.0 L 331.6,349.2 L 325.5,348.7 L 338.6,328.0 L 323.1,318.5 L 310.9,320.3 L 303.5,316.8 L 292.3,322.1 L 277.2,319.6 L 265.3,298.3 L 255.8,293.1 L 249.4,283.5 L 235.9,273.8 L 230.4,275.8 Z"></path>
+              <line id="pf-line-pa-bg" x1="146" y1="90" x2="257" y2="177"></line>
+              <line id="pf-line-ib-bg" x1="175" y1="266" x2="257" y2="177"></line>
+              <line id="pf-line-pa-cl" x1="146" y1="90" x2="207" y2="203"></line>
+              <line id="pf-line-ib-cl" x1="175" y1="266" x2="207" y2="203"></line>
+              <line id="pf-line-vz-bg" x1="335" y1="35" x2="257" y2="177"></line>
+
+              <g class="pf-node" data-node="panamacity" transform="translate(146,90)">
+                <circle r="7"></circle>
+                <text class="pf-node-label" y="-16">Panama City</text>
+                <text class="pf-node-value" y="24"></text>
+              </g>
+              <g class="pf-node" data-node="ibarra" transform="translate(175,266)">
+                <circle r="7"></circle>
+                <text class="pf-node-label" y="24">Ibarra, EC</text>
+                <text class="pf-node-value" y="40"></text>
+              </g>
+              <g class="pf-node pf-node-wind" data-node="puntofijo" transform="translate(335,35)">
+                <circle r="7"></circle>
+                <text class="pf-node-label" x="-9" y="-10" text-anchor="end">Punto Fijo, VE wind</text>
+                <text class="pf-node-value" x="-9" y="4" text-anchor="end"></text>
+              </g>
+              <g class="pf-node" data-node="bogota" transform="translate(257,177)">
+                <circle r="7"></circle>
+                <text class="pf-node-label" y="24">Bogotá</text>
+                <text class="pf-node-value" y="40"></text>
+              </g>
+              <g class="pf-node" data-node="cali" transform="translate(207,203)">
+                <circle r="7"></circle>
+                <text class="pf-node-label" x="-11" y="4" text-anchor="end">Cali</text>
+                <text class="pf-node-value" x="-11" y="18" text-anchor="end"></text>
+              </g>
+            </svg>
+            <div id="pf-cost-panel">
+              <div class="pf-cost-title">dispatch cost</div>
+              <div class="pf-cost-row"><span class="pf-cost-name">Panama City</span><span class="pf-cost-rate">$42/MWh</span><span class="pf-cost-amount" id="pf-cost-panamacity"></span></div>
+              <div class="pf-cost-row"><span class="pf-cost-name">Ibarra</span><span class="pf-cost-rate">$35/MWh</span><span class="pf-cost-amount" id="pf-cost-ibarra"></span></div>
+              <div class="pf-cost-row"><span class="pf-cost-name">Punto Fijo wind</span><span class="pf-cost-rate">$4/MWh</span><span class="pf-cost-amount" id="pf-cost-puntofijo"></span></div>
+              <div class="pf-cost-row"><span class="pf-cost-name">Panama City&ndash;Cali line</span><span class="pf-cost-rate">$3/MWh</span><span class="pf-cost-amount" id="pf-cost-line"></span></div>
+              <div class="pf-cost-row"><span class="pf-cost-name">grid tie (Bogotá)</span><span class="pf-cost-rate">$65/MWh</span><span class="pf-cost-amount" id="pf-cost-tie"></span></div>
+              <div class="pf-cost-row pf-cost-total"><span class="pf-cost-name">total</span><span class="pf-cost-rate"></span><span class="pf-cost-amount" id="pf-cost-total"></span></div>
+            </div>
+            </div>
+            <p id="pf-status" role="status"></p>
+            <table id="pf-lines-table">
+              <thead>
+                <tr><th>line</th><th>flow</th><th>capacity</th><th>status</th></tr>
+              </thead>
+              <tbody>
+                <tr id="pf-row-pa-bg" data-line="pa-bg"><td>Panama City &ndash; Bogotá</td><td class="pf-row-flow"></td><td class="pf-row-capacity"></td><td class="pf-row-status"></td></tr>
+                <tr id="pf-row-ib-bg" data-line="ib-bg"><td>Ibarra &ndash; Bogotá</td><td class="pf-row-flow"></td><td class="pf-row-capacity"></td><td class="pf-row-status"></td></tr>
+                <tr id="pf-row-pa-cl" data-line="pa-cl"><td>Panama City &ndash; Cali</td><td class="pf-row-flow"></td><td class="pf-row-capacity"></td><td class="pf-row-status"></td></tr>
+                <tr id="pf-row-ib-cl" data-line="ib-cl"><td>Ibarra &ndash; Cali</td><td class="pf-row-flow"></td><td class="pf-row-capacity"></td><td class="pf-row-status"></td></tr>
+                <tr id="pf-row-vz-bg" data-line="vz-bg"><td>Punto Fijo &ndash; Bogotá</td><td class="pf-row-flow"></td><td class="pf-row-capacity"></td><td class="pf-row-status"></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="chart-caption">
+            These five nodes sit at their real coordinates (Bogotá and Cali in Colombia, Panama City in Panama, Ibarra just over the border
+            in Ecuador, and Punto Fijo on Venezuela's Paraguaná Peninsula); everything else, the plants, the lines, the capacities, the
+            dispatch numbers, is invented for this demo and not a reproduction of Colombia's actual grid.
+            Flows are solved with a linearized (DC) power flow: bus angles from line reactances, no losses or reactive power, the same kind
+            of fast approximation that gets checked against a full AC power flow in the work above. Bogotá doubles as the model's reference
+            bus, so it silently makes up any gap between the dialed-in hydro, the fixed wind, and both cities' demand, standing in for the
+            rest of Colombia's interconnected grid.
+          </p>
         </div>
 
         <!-- Solar & PV Data -->
@@ -211,6 +300,215 @@
           });
         })
         .catch(function () { /* data file unavailable; leave chart area empty */ });
+    })();
+  </script>
+  <script>
+    (function () {
+      const svg = document.getElementById('pf-svg');
+      if (!svg) return;
+
+      const nodes = {
+        panamacity:    { name: 'Panama City', type: 'hydro' },
+        ibarra:        { name: 'Ibarra', type: 'hydro' },
+        puntofijo: { name: 'Punto Fijo wind', type: 'wind', fixedOutput: 20 },
+        bogota:       { name: 'Bogotá', type: 'load', load: 118, isReference: true },
+        cali:     { name: 'Cali', type: 'load', load: 62 }
+      };
+      const edges = [
+        { id: 'pa-bg', from: 'panamacity',    to: 'bogota',   x: 0.04, capacity: 110, toggleable: false },
+        { id: 'ib-bg', from: 'ibarra',        to: 'bogota',   x: 0.05, capacity: 90,  toggleable: false },
+        { id: 'pa-cl', from: 'panamacity',    to: 'cali', x: 0.08, capacity: 55,  toggleable: true },
+        { id: 'ib-cl', from: 'ibarra',        to: 'cali', x: 0.07, capacity: 55,  toggleable: false },
+        { id: 'vz-bg', from: 'puntofijo', to: 'bogota',   x: 0.10, capacity: 40,  toggleable: false }
+      ];
+      const state = { panamacityOutput: 80, ibarraOutput: 80, 'pa-clOnline': true };
+
+      // Illustrative $/MWh costs, used only to let readers explore dispatch cost minimization.
+      const GEN_COST = { panamacity: 42, ibarra: 35, puntofijo: 4 };
+      const LINE_COST = { 'pa-cl': 3 };
+      const GRID_TIE_COST = 65;
+
+      // Gaussian elimination with partial pivoting, solves A * x = b
+      function solveLinear(A, b) {
+        const n = b.length;
+        const M = A.map(function (row, i) { return row.concat([b[i]]); });
+        for (let col = 0; col < n; col++) {
+          let piv = col;
+          for (let r = col + 1; r < n; r++) {
+            if (Math.abs(M[r][col]) > Math.abs(M[piv][col])) piv = r;
+          }
+          const tmp = M[col]; M[col] = M[piv]; M[piv] = tmp;
+          if (Math.abs(M[col][col]) < 1e-9) continue;
+          for (let r = 0; r < n; r++) {
+            if (r === col) continue;
+            const factor = M[r][col] / M[col][col];
+            for (let c = col; c <= n; c++) M[r][c] -= factor * M[col][c];
+          }
+        }
+        return M.map(function (row, i) { return row[n] / (row[i] || 1); });
+      }
+
+      function compute() {
+        const busIds = Object.keys(nodes);
+        const windOut = nodes.puntofijo.fixedOutput;
+
+        const grossGen = {
+          panamacity: state.panamacityOutput,
+          ibarra: state.ibarraOutput,
+          puntofijo: windOut,
+          bogota: 0,
+          cali: 0
+        };
+
+        const netInjection = {};
+        busIds.forEach(function (id) {
+          netInjection[id] = (grossGen[id] || 0) - (nodes[id].load || 0);
+        });
+
+        const refId = busIds.filter(function (id) { return nodes[id].isReference; })[0];
+        const unknownIds = busIds.filter(function (id) { return id !== refId; });
+        const activeEdges = edges.filter(function (e) { return !e.toggleable || state[e.id + 'Online']; });
+
+        // Bogotá (the reference bus) is excluded from the balance equations below,
+        // so it implicitly absorbs whatever the other four buses don't, standing in
+        // for a tie to the rest of the interconnected grid.
+        const balance = (state.panamacityOutput + state.ibarraOutput + windOut) - (nodes.bogota.load + nodes.cali.load);
+
+        const n = unknownIds.length;
+        const B = [];
+        for (let i = 0; i < n; i++) B.push(new Array(n).fill(0));
+        const P = unknownIds.map(function (id) { return netInjection[id]; });
+
+        activeEdges.forEach(function (e) {
+          const w = 1 / e.x;
+          const i = unknownIds.indexOf(e.from);
+          const j = unknownIds.indexOf(e.to);
+          if (i >= 0) B[i][i] += w;
+          if (j >= 0) B[j][j] += w;
+          if (i >= 0 && j >= 0) { B[i][j] -= w; B[j][i] -= w; }
+        });
+
+        const thetaVals = solveLinear(B, P);
+        const theta = {};
+        unknownIds.forEach(function (id, k) { theta[id] = thetaVals[k]; });
+        theta[refId] = 0;
+
+        const flows = edges.map(function (e) {
+          const online = !e.toggleable || state[e.id + 'Online'];
+          if (!online) return { id: e.id, from: e.from, to: e.to, capacity: e.capacity, online: false, flow: 0, overloaded: false };
+          const w = 1 / e.x;
+          const f = (theta[e.from] - theta[e.to]) * w;
+          return { id: e.id, from: e.from, to: e.to, capacity: e.capacity, online: true, flow: f, overloaded: Math.abs(f) > e.capacity };
+        });
+
+        const lineFlow = flows.filter(function (f) { return f.id === 'pa-cl'; })[0];
+        const cost = {
+          panamacity: grossGen.panamacity * GEN_COST.panamacity,
+          ibarra: grossGen.ibarra * GEN_COST.ibarra,
+          puntofijo: grossGen.puntofijo * GEN_COST.puntofijo,
+          line: Math.abs(lineFlow.flow) * LINE_COST['pa-cl'],
+          tie: Math.abs(balance) * GRID_TIE_COST
+        };
+        cost.total = cost.panamacity + cost.ibarra + cost.puntofijo + cost.line + cost.tie;
+
+        return { grossGen: grossGen, netInjection: netInjection, flows: flows, balance: balance, cost: cost };
+      }
+
+      function fmt(n) { return (Math.round(n * 10) / 10).toString(); }
+      function fmtUsd(n) { return '$' + Math.round(n).toLocaleString(); }
+
+      function render() {
+        const result = compute();
+        const statusEl = document.getElementById('pf-status');
+
+        Object.keys(nodes).forEach(function (id) {
+          const g = svg.querySelector('.pf-node[data-node="' + id + '"]');
+          if (!g) return;
+          const valueEl = g.querySelector('.pf-node-value');
+          const net = result.netInjection[id];
+          if (nodes[id].type === 'load') {
+            valueEl.textContent = fmt(-net) + ' MW load';
+          } else {
+            valueEl.textContent = fmt(result.grossGen[id]) + ' MW';
+          }
+        });
+
+        edges.forEach(function (e) {
+          const lineEl = document.getElementById('pf-line-' + e.id);
+          const row = document.getElementById('pf-row-' + e.id);
+          if (!lineEl) return;
+          const online = !e.toggleable || state[e.id + 'Online'];
+          const edgeResult = result.flows.filter(function (f) { return f.id === e.id; })[0];
+          const overloaded = !!(edgeResult && edgeResult.overloaded);
+          lineEl.classList.toggle('pf-offline', !online);
+          lineEl.classList.toggle('pf-overloaded', overloaded);
+          if (row) {
+            row.classList.toggle('pf-row-offline', !online);
+            row.classList.toggle('pf-row-overloaded', overloaded);
+            row.querySelector('.pf-row-flow').textContent = online ? fmt(Math.abs(edgeResult.flow)) + ' MW' : '–';
+            row.querySelector('.pf-row-capacity').textContent = e.capacity + ' MW';
+            row.querySelector('.pf-row-status').textContent = !online ? 'line off' : (overloaded ? 'overloaded' : 'ok');
+          }
+        });
+
+        const overloaded = result.flows.filter(function (f) { return f.overloaded; });
+        const messages = [];
+        if (Math.abs(result.balance) > 0.05) {
+          messages.push(
+            (result.balance > 0 ? 'Generation is running ' + fmt(result.balance) + ' MW over demand, exported ' : 'Generation is running ' + fmt(-result.balance) + ' MW short of demand, imported ') +
+            'through Bogotá’s tie to the rest of the grid.'
+          );
+        }
+        if (overloaded.length) {
+          messages.push('Congested: the ' + overloaded.map(function (f) {
+            return nodes[f.from].name + '–' + nodes[f.to].name;
+          }).join(', ') + ' line is carrying more than its rated capacity.');
+        }
+        if (messages.length) {
+          statusEl.textContent = messages.join(' ');
+          statusEl.classList.add('pf-warning');
+        } else {
+          statusEl.textContent = 'Generation matches demand and all lines are within capacity.';
+          statusEl.classList.remove('pf-warning');
+        }
+
+        document.getElementById('pf-cost-panamacity').textContent = fmtUsd(result.cost.panamacity);
+        document.getElementById('pf-cost-ibarra').textContent = fmtUsd(result.cost.ibarra);
+        document.getElementById('pf-cost-puntofijo').textContent = fmtUsd(result.cost.puntofijo);
+        document.getElementById('pf-cost-line').textContent = fmtUsd(result.cost.line);
+        document.getElementById('pf-cost-tie').textContent = fmtUsd(result.cost.tie);
+        document.getElementById('pf-cost-total').textContent = fmtUsd(result.cost.total) + '/h';
+      }
+
+      function wireSlider(sliderId, key) {
+        const slider = document.getElementById(sliderId);
+        const valueEl = document.getElementById(sliderId + '-value');
+        if (!slider) return;
+        slider.addEventListener('input', function () {
+          state[key] = parseInt(slider.value, 10);
+          if (valueEl) valueEl.textContent = slider.value;
+          render();
+        });
+      }
+      wireSlider('pf-slider-panamacity', 'panamacityOutput');
+      wireSlider('pf-slider-ibarra', 'ibarraOutput');
+
+      function wireToggle(btnId, onToggle) {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+          onToggle(btn);
+          render();
+        });
+      }
+
+      wireToggle('pf-toggle-line', function (btn) {
+        state['pa-clOnline'] = !state['pa-clOnline'];
+        btn.setAttribute('aria-pressed', state['pa-clOnline']);
+        btn.querySelector('span').textContent = state['pa-clOnline'] ? 'ON' : 'OFF';
+      });
+
+      render();
     })();
   </script>
 </body>

@@ -473,6 +473,173 @@ section { padding: 100px 0; background: rgba(250, 248, 244, 0.93); }
   padding: 24px;
 }
 
+/* ── Power-flow diagram (research.html) ─────────── */
+#pf-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.pf-toggle {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text);
+  background: #faf8f4;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all var(--ease);
+}
+.pf-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.pf-toggle[aria-pressed="false"] {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+.pf-slider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text);
+  background: #faf8f4;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 8px 16px;
+}
+.pf-slider output { color: var(--accent); font-weight: 700; }
+.pf-slider input[type="range"] {
+  accent-color: var(--accent);
+  width: 90px;
+  cursor: pointer;
+}
+
+#pf-diagram-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: center;
+}
+
+#pf-svg {
+  width: 100%;
+  height: auto;
+  max-width: 560px;
+  display: block;
+  margin: 0 auto;
+  flex: 1 1 320px;
+  min-width: 280px;
+}
+
+#pf-cost-panel {
+  flex: 0 0 200px;
+  background: #faf8f4;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: 0.76rem;
+}
+.pf-cost-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.pf-cost-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+}
+.pf-cost-row:last-child { border-bottom: none; }
+.pf-cost-name { color: var(--text); flex: 1 1 auto; }
+.pf-cost-rate { color: var(--muted); white-space: nowrap; }
+.pf-cost-amount { color: var(--text); white-space: nowrap; text-align: right; min-width: 52px; }
+.pf-cost-total { margin-top: 4px; padding-top: 10px; border-top: 2px solid var(--accent); font-weight: 700; }
+.pf-cost-total .pf-cost-amount { color: var(--accent); }
+
+#pf-map-colombia {
+  fill: var(--accent-bg);
+  stroke: var(--border);
+  stroke-width: 1.5;
+}
+
+#pf-svg line {
+  stroke: var(--muted);
+  stroke-width: 2.5;
+  transition: stroke var(--ease), stroke-width var(--ease);
+}
+#pf-svg line.pf-overloaded { stroke: #b91c1c; stroke-width: 4; }
+#pf-svg line.pf-offline { stroke: var(--border); stroke-dasharray: 5, 4; }
+
+.pf-node circle {
+  fill: #faf8f4;
+  stroke: var(--accent);
+  stroke-width: 2;
+  transition: all var(--ease);
+}
+.pf-node-wind circle { stroke: #b45309; }
+
+.pf-node-label {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--text);
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: #faf8f4;
+  stroke-width: 3px;
+}
+.pf-node-value {
+  font-family: var(--mono);
+  font-size: 13px;
+  fill: var(--muted);
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: #faf8f4;
+  stroke-width: 3px;
+}
+
+#pf-status {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+#pf-status.pf-warning { color: #b91c1c; font-weight: 600; }
+
+#pf-lines-table {
+  width: 100%;
+  margin-top: 18px;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+}
+#pf-lines-table th {
+  text-align: left;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.7rem;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+}
+#pf-lines-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+#pf-lines-table tr:last-child td { border-bottom: none; }
+#pf-lines-table tr.pf-row-offline td { color: var(--muted); opacity: 0.6; }
+#pf-lines-table tr.pf-row-overloaded td { color: #b91c1c; font-weight: 700; }
+
 /* ── Responsive ──────────────────────────────── */
 @media (max-width: 768px) {
   #header    { padding: 16px 24px; }
