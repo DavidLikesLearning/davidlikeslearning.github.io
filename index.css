@@ -384,7 +384,7 @@ section { padding: 100px 0; background: rgba(250, 248, 244, 0.93); }
   outline-offset: 3px;
   border-radius: 3px;
 }
-/* Cards are <a> tags — give them a clear focus ring too */
+/* Cards are <a> tags, give them a clear focus ring too */
 .card:focus-visible { outline-offset: 2px; }
 
 /* ── Reduced motion ──────────────────────────── */
