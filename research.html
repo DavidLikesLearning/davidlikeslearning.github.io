@@ -137,7 +137,7 @@
           <div class="chart-wrap">
             <canvas id="pv-signal-chart" height="320" role="img" aria-label="Line chart comparing a clear-day solar power signal, a soiled-panel signal, and a signal with a cloud passing at midday"></canvas>
           </div>
-          <p class="chart-caption">Illustrative, synthetic daily power curves &mdash; not measured data &mdash; showing the three signal shapes this work learns to tell apart.</p>
+          <p class="chart-caption">Modeled from a clear-sky irradiance curve (pvlib, Austin TX, Jun 21) &mdash; not a measured panel &mdash; with the cloud, soiling, and obstruction effects layered on top to show the signal shapes this work learns to tell apart.</p>
         </div>
 
         <!-- ML for Healthcare / Healthcare Education-->
@@ -177,49 +177,41 @@
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"
           integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"
-          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="vendor-chart.min.js"></script>
   <script src="index.js"></script>
   <script>
     (function () {
       const canvas = document.getElementById('pv-signal-chart');
       if (!canvas || typeof Chart === 'undefined') return;
 
-      // Synthetic illustrative data: a sun-up-to-sun-down arc, 5am-7pm
-      const hours = [];
-      const clear = [];
-      const soiled = [];
-      const cloudy = [];
-      for (let h = 5; h <= 19; h += 0.5) {
-        hours.push(h.toFixed(1) + 'h');
-        const base = Math.max(0, Math.sin(Math.PI * (h - 5) / 14));
-        clear.push(+base.toFixed(3));
-        soiled.push(+(base * 0.8).toFixed(3));
-        const cloudDip = (h >= 12.5 && h <= 13.5) ? 0.35 : 1;
-        cloudy.push(+(base * cloudDip).toFixed(3));
-      }
-
-      new Chart(canvas.getContext('2d'), {
-        type: 'line',
-        data: {
-          labels: hours,
-          datasets: [
-            { label: 'clear day', data: clear, borderColor: '#0f766e', backgroundColor: 'transparent', borderWidth: 2.5, pointRadius: 0, tension: 0.35 },
-            { label: 'soiling (dust buildup)', data: soiled, borderColor: '#b45309', backgroundColor: 'transparent', borderWidth: 2, borderDash: [5, 3], pointRadius: 0, tension: 0.35 },
-            { label: 'cloud passing at 1pm', data: cloudy, borderColor: '#6b6456', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.2 }
-          ]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { position: 'bottom', labels: { color: '#1c1c1c', font: { family: 'Inter' } } }
-          },
-          scales: {
-            x: { ticks: { maxTicksLimit: 8, color: '#6b6456' }, grid: { display: false } },
-            y: { title: { display: true, text: 'relative power output', color: '#6b6456' }, ticks: { color: '#6b6456' }, grid: { color: '#d0c9bf' } }
-          }
-        }
-      });
+      fetch('pv-signals.json')
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          new Chart(canvas.getContext('2d'), {
+            type: 'line',
+            data: {
+              labels: d.labels,
+              datasets: [
+                { label: 'clear day', data: d.clear, borderColor: '#0f766e', backgroundColor: 'transparent', borderWidth: 2.5, pointRadius: 0, tension: 0.25 },
+                { label: 'cloud cover (noisy losses)', data: d.cloudy, borderColor: '#6b6456', backgroundColor: 'transparent', borderWidth: 1.75, pointRadius: 0, tension: 0.15 },
+                { label: 'opaque object (brief sharp drop)', data: d.opaque, borderColor: '#b91c1c', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0 },
+                { label: 'soiling (uniformly lower)', data: d.soiled, borderColor: '#b45309', backgroundColor: 'transparent', borderWidth: 2, borderDash: [5, 3], pointRadius: 0, tension: 0.25 }
+              ]
+            },
+            options: {
+              responsive: true,
+              interaction: { mode: 'index', intersect: false },
+              plugins: {
+                legend: { position: 'bottom', labels: { color: '#1c1c1c', font: { family: 'Inter' } } }
+              },
+              scales: {
+                x: { ticks: { maxTicksLimit: 9, color: '#6b6456' }, grid: { display: false } },
+                y: { title: { display: true, text: 'relative power output', color: '#6b6456' }, ticks: { color: '#6b6456' }, grid: { color: '#d0c9bf' } }
+              }
+            }
+          });
+        })
+        .catch(function () { /* data file unavailable; leave chart area empty */ });
     })();
   </script>
 </body>
