@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research, in plain English — David J Florez Rodriguez</title>
+  <meta name="description" content="A plain-English tour of David J Florez Rodriguez's research: energy system optimization, solar/PV data tools, and machine learning for healthcare.">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <a href="#main-content" id="skip-link">Skip to main content</a>
+
+  <div id="loading" aria-hidden="true"><div id="spinner"></div></div>
+
+  <!-- Header -->
+  <header id="header" class="animate__animated animate__slideInDown">
+    <a id="title" href="index.html" aria-label="Site title: Energy and Math for the Common Good">Energy &amp; Math for the Common Good</a>
+    <nav id="links" aria-label="Main navigation">
+      <a href="index.html#background">background</a>
+      <a href="index.html#research">research</a>
+      <a href="research.html">deep dive</a>
+      <a href="index.html#awards">awards</a>
+      <a href="index.html#projects">projects</a>
+      <a href="index.html#volunteering">volunteering</a>
+      <a href="index.html#contact">contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+
+    <section id="research-deep-dive" style="padding-top: 160px;">
+      <div class="section-inner">
+        <h2 class="section-title">research, in plain english</h2>
+        <p class="section-sub">
+          What I actually work on, explained without the jargon &mdash;
+          <a href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
+            full publication list on Google Scholar <i class="fas fa-external-link-alt" style="font-size:0.75em;"></i>
+          </a>
+        </p>
+
+        <!-- Tab buttons -->
+        <div class="tabs" role="tablist" aria-label="Research areas">
+          <button class="tab-btn active" data-tab="tab-energy" type="button">energy systems &amp; optimization</button>
+          <button class="tab-btn" data-tab="tab-solar" type="button">solar &amp; PV data</button>
+          <button class="tab-btn" data-tab="tab-health" type="button">ML for healthcare</button>
+        </div>
+
+        <!-- Energy Systems & Optimization -->
+        <div class="tab-panel active" id="tab-energy">
+          <p class="tab-intro">
+            My current PhD work is on energy system optimization models &mdash; the tools planners use to figure out
+            how a city, region, or country should build and run its power grid over the next few decades to hit cost
+            and emissions targets.
+          </p>
+          <div class="cards">
+            <a class="card" href="https://github.com/TemoaProject/temoa" target="_blank" rel="noopener">
+              <div class="card-top">
+                <i class="fas fa-folder-open card-icon"></i>
+                <span class="card-link"><i class="fab fa-github"></i></span>
+              </div>
+              <h3>Temoa</h3>
+              <p>An open-source model that simulates how an energy system could evolve over decades, used to compare long-term investment and policy choices. I'm a collaborator on the project; a publication is in progress.</p>
+              <div class="card-meta"><span class="tag">Python</span></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Solar & PV Data -->
+        <div class="tab-panel" id="tab-solar">
+          <p class="tab-intro">
+            Before my PhD, I worked on making solar panel data more useful: panels generate messy, unlabeled power
+            readings, and small problems like shade from a nearby tree can quietly cut into how much energy they
+            produce. This work builds tools to catch and quantify that automatically.
+          </p>
+          <div class="cards">
+            <a class="card" href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
+              <div class="card-year">2022</div>
+              <h3>Solar panel power simulation for shade detection</h3>
+              <p>Built a simulator that predicts how much power a shaded solar panel loses, so utilities can spot shading problems without needing labeled data.</p>
+              <div class="card-meta"><i class="fas fa-quote-right"></i>&nbsp;5 citations</div>
+            </a>
+            <a class="card" href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
+              <div class="card-year">2022</div>
+              <h3>Estimation of shade losses in unlabeled PV data</h3>
+              <p>Developed a method to estimate how much energy solar panels lose to shade using only their raw power output, no extra sensors or labels required.</p>
+              <div class="card-meta"><i class="fas fa-quote-right"></i>&nbsp;4 citations</div>
+            </a>
+            <a class="card" href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
+              <div class="card-year">2025</div>
+              <h3>Solar Data Tools</h3>
+              <p>Co-built an open-source Python toolkit that automatically cleans and analyzes messy, unlabeled solar panel data at scale.</p>
+              <div class="card-meta"><i class="fas fa-quote-right"></i>&nbsp;1 citation</div>
+            </a>
+            <a class="card" href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
+              <div class="card-year">2021</div>
+              <h3>solar-data-tools (SLAC report)</h3>
+              <p>The technical report documenting that same toolkit's methods, written for SLAC National Accelerator Laboratory.</p>
+              <div class="card-meta"><i class="fas fa-quote-right"></i>&nbsp;1 citation</div>
+            </a>
+          </div>
+        </div>
+
+        <!-- ML for Healthcare -->
+        <div class="tab-panel" id="tab-health">
+          <p class="tab-intro">
+            Earlier on, I worked on applying machine learning to healthcare problems &mdash; both building models for
+            clinical data and helping design programs that bring more students into healthcare research.
+          </p>
+          <div class="cards">
+            <a class="card" href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
+              <div class="card-year">2022</div>
+              <h3>Development and validation of a machine learning system to identify reflux events</h3>
+              <p>Trained a machine learning model to automatically flag acid reflux events in 24-hour esophageal monitoring data, cutting down hours of manual review by doctors.</p>
+              <div class="card-meta"><i class="fas fa-quote-right"></i>&nbsp;11 citations</div>
+            </a>
+            <a class="card" href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
+              <div class="card-year">2024</div>
+              <h3>Achieving Inclusive Healthcare through Integrating Education and Research with AI and Personalized Curricula</h3>
+              <p>Co-authored a paper on building AI and research training programs that bring underrepresented students into healthcare research.</p>
+              <div class="card-meta"><i class="fas fa-quote-right"></i>&nbsp;4 citations</div>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer">
+    David J Florez Rodriguez &middot;
+    <a href="https://github.com/DavidLikesLearning/davidlikeslearning.github.io" target="_blank" rel="noopener">source</a>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+          integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="index.js"></script>
+</body>
+</html>

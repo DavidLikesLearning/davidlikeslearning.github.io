@@ -29,4 +29,13 @@ $(document).ready(function () {
     observer.observe(card);
   });
 
+  // Tab switching (research deep-dive page)
+  $('.tab-btn').on('click', function () {
+    const target = $(this).data('tab');
+    $('.tab-btn').removeClass('active');
+    $(this).addClass('active');
+    $('.tab-panel').removeClass('active');
+    $('#' + target).addClass('active');
+  });
+
 });
