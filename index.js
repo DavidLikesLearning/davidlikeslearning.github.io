@@ -29,13 +29,23 @@ $(document).ready(function () {
     observer.observe(card);
   });
 
-  // Tab switching (research deep-dive page)
-  $('.tab-btn').on('click', function () {
-    const target = $(this).data('tab');
+  // Tab switching (research sections)
+  function activateTab(target) {
+    const btn = $('.tab-btn[data-tab="' + target + '"]');
+    if (!btn.length) return;
     $('.tab-btn').removeClass('active');
-    $(this).addClass('active');
+    btn.addClass('active');
     $('.tab-panel').removeClass('active');
     $('#' + target).addClass('active');
+  }
+
+  $('.tab-btn').on('click', function () {
+    activateTab($(this).data('tab'));
   });
+
+  // Deep-link straight to a tab via a URL hash, e.g. research.html#tab-solar
+  if (window.location.hash) {
+    activateTab(window.location.hash.slice(1));
+  }
 
 });

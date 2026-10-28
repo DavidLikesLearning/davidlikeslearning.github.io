@@ -87,38 +87,59 @@
           full list on Google Scholar <i class="fas fa-external-link-alt" style="font-size:0.75em;"></i>
         </a>
       </p>
-      <div class="cards">
+      <!-- Tab buttons -->
+      <div class="tabs" role="tablist" aria-label="Research areas">
+        <button class="tab-btn active" data-tab="tab-energy" type="button">energy systems &amp; optimization</button>
+        <button class="tab-btn" data-tab="tab-solar" type="button">solar &amp; PV data</button>
+        <button class="tab-btn" data-tab="tab-health" type="button">ML for healthcare</button>
+      </div>
 
-        <a class="card" href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
-          <div class="card-year">2024</div>
-          <h3>Achieving Inclusive Healthcare through Integrating Education and Research with AI and Personalized Curricula</h3>
-          <div class="card-meta"><i class="fas fa-quote-right"></i>&nbsp;4 citations</div>
-        </a>
+      <!-- Energy Systems & Optimization -->
+      <div class="tab-panel active" id="tab-energy">
+        <p class="tab-intro">Current PhD work on long-term energy system planning and faster, more reliable grid-optimization algorithms &mdash; see the projects below, with publications in progress.</p>
+        <a class="btn-secondary learn-more-btn" href="research.html#tab-energy">learn more <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+      </div>
 
-        <a class="card" href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
-          <div class="card-year">2022</div>
-          <h3>Development and validation of a machine learning system to identify reflux events in esophageal 24-hour pH/impedance studies</h3>
-          <div class="card-meta"><i class="fas fa-quote-right"></i>&nbsp;11 citations</div>
-        </a>
+      <!-- Solar & PV Data -->
+      <div class="tab-panel" id="tab-solar">
+        <div class="cards">
+          <a class="card" href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
+            <div class="card-year">2022</div>
+            <h3>Solar panel power simulation for shade detection</h3>
+            <div class="card-meta"><i class="fas fa-quote-right"></i>&nbsp;5 citations</div>
+          </a>
 
-        <a class="card" href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
-          <div class="card-year">2022</div>
-          <h3>Solar panel power simulation for shade detection</h3>
-          <div class="card-meta"><i class="fas fa-quote-right"></i>&nbsp;5 citations</div>
-        </a>
+          <a class="card" href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
+            <div class="card-year">2022</div>
+            <h3>Estimation of shade losses in unlabeled PV data</h3>
+            <div class="card-meta"><i class="fas fa-quote-right"></i>&nbsp;4 citations</div>
+          </a>
 
-        <a class="card" href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
-          <div class="card-year">2022</div>
-          <h3>Estimation of shade losses in unlabeled PV data</h3>
-          <div class="card-meta"><i class="fas fa-quote-right"></i>&nbsp;4 citations</div>
-        </a>
+          <a class="card" href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
+            <div class="card-year">2021</div>
+            <h3>solar-data-tools</h3>
+            <div class="card-meta"><i class="fas fa-quote-right"></i>&nbsp;1 citation</div>
+          </a>
+        </div>
+        <a class="btn-secondary learn-more-btn" href="research.html#tab-solar">learn more <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+      </div>
 
-        <a class="card" href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
-          <div class="card-year">2021</div>
-          <h3>solar-data-tools</h3>
-          <div class="card-meta"><i class="fas fa-quote-right"></i>&nbsp;1 citation</div>
-        </a>
+      <!-- ML for Healthcare -->
+      <div class="tab-panel" id="tab-health">
+        <div class="cards">
+          <a class="card" href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
+            <div class="card-year">2024</div>
+            <h3>Achieving Inclusive Healthcare through Integrating Education and Research with AI and Personalized Curricula</h3>
+            <div class="card-meta"><i class="fas fa-quote-right"></i>&nbsp;4 citations</div>
+          </a>
 
+          <a class="card" href="https://scholar.google.com/citations?user=P9wD3UEAAAAJ&hl=en" target="_blank" rel="noopener">
+            <div class="card-year">2022</div>
+            <h3>Development and validation of a machine learning system to identify reflux events in esophageal 24-hour pH/impedance studies</h3>
+            <div class="card-meta"><i class="fas fa-quote-right"></i>&nbsp;11 citations</div>
+          </a>
+        </div>
+        <a class="btn-secondary learn-more-btn" href="research.html#tab-health">learn more <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
       </div>
     </div>
   </section>
@@ -180,6 +201,26 @@
           <p>Open-source energy system optimization model. Collaborator on the project. Publication soon.</p>
           <div class="card-meta"><span class="tag">Python</span></div>
         </a>
+
+        <a class="card" href="https://github.com/SvenNeubauer/Electrical-grid-expansion-using-AI" target="_blank" rel="noopener">
+          <div class="card-top">
+            <i class="fas fa-folder-open card-icon"></i>
+            <span class="card-link"><i class="fab fa-github"></i></span>
+          </div>
+          <h3>GNN/GAT &amp; Gradient Boosting for Transmission Expansion &amp; Line Switching</h3>
+          <p>Graph neural networks, graph attention networks, and gradient boosting models that learn to solve transmission expansion and optimal line switching against full AC power flow. The expansion models are path-aware, so they judge whether an entire line corridor is buildable, not just its endpoints. Tested on the synthetic Texas ACTIVSg2000 grid.</p>
+          <div class="card-meta"><span class="tag">Python</span><span class="tag">PyTorch</span></div>
+        </a>
+
+        <div class="card">
+          <div class="card-top">
+            <i class="fas fa-folder-open card-icon"></i>
+            <span class="card-link"><i class="fas fa-lock"></i></span>
+          </div>
+          <h3>InterdictionRobustOPF</h3>
+          <p>Testing whether today's fastest AC optimal power flow algorithms can react quickly enough to grid damage from extreme weather or deliberate attacks, where operators need a safe, feasible response in seconds rather than minutes.</p>
+          <div class="card-meta"><span class="tag">Python</span><span class="tag">in progress</span></div>
+        </div>
 
       </div>
     </div>

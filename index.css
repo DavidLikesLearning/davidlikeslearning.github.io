@@ -256,6 +256,7 @@ section { padding: 100px 0; background: rgba(250, 248, 244, 0.93); }
   color: var(--muted);
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 6px;
 }
 
@@ -431,6 +432,45 @@ section { padding: 100px 0; background: rgba(250, 248, 244, 0.93); }
   line-height: 1.75;
   max-width: 720px;
   margin-bottom: 30px;
+}
+
+.learn-more-btn { margin-top: 22px; }
+
+/* ── Deep-dive extras (research.html) ───────────── */
+.deep-section-title {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 40px 0 16px;
+  padding-top: 30px;
+  border-top: 1px solid var(--border);
+}
+
+.construction-note {
+  font-size: 0.9rem;
+  color: var(--muted);
+  font-style: italic;
+  padding: 18px 22px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  max-width: 480px;
+}
+
+.chart-caption {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 10px;
+  max-width: 680px;
+}
+
+.chart-wrap {
+  max-width: 760px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
 }
 
 /* ── Responsive ──────────────────────────────── */
