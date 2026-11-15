@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 
 import pandas as pd
+from dashboard_costs import costs
 
 SITE = Path(__file__).resolve().parents[1]
 TEMOA = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else SITE.parent / "temoa"
@@ -55,6 +56,7 @@ def export():
         book = TEMOA / "output_files" / folder / filename
         if not book.exists():
             raise FileNotFoundError(book)
+        cost_data = costs(TEMOA, folder, book, scenario)
         capacity = pd.read_excel(book, sheet_name="Capacity_electricity")
         emissions = pd.read_excel(book, sheet_name="Emissions")
         transmission = pd.read_excel(book, sheet_name="Activity_transmission")
@@ -83,12 +85,13 @@ def export():
                     round((float(outgoing.get(region, 0)) - float(incoming.get(region, 0))) / 1e6, 5),
                     round(float(co2.get(region, 0)) / 1e6, 5),
                     *[round(value(k), 5) for k in ("solar", "wind", "hydro", "geothermal", "nuclear", "coal", "gas", "biomass", "other")],
+                    *cost_data.get((region,year), ["", "", "", ""]),
                 ]
     out = SITE / "data" / "elote-regions.csv"
     out.parent.mkdir(exist_ok=True)
     with out.open("w", newline="") as f:
         writer = csv.writer(f, lineterminator="\n")
-        writer.writerow(["scenario", "year", "region", "capacity_gw", "clean_gw", "battery_gw", "net_exports_twh", "co2_mt", *[k + "_gw" for k in ("solar", "wind", "hydro", "geothermal", "nuclear", "coal", "gas", "biomass", "other")]])
+        writer.writerow(["scenario", "year", "region", "capacity_gw", "clean_gw", "battery_gw", "net_exports_twh", "co2_mt", *[k + "_gw" for k in ("solar", "wind", "hydro", "geothermal", "nuclear", "coal", "gas", "biomass", "other")], "public_avg_cost", "server_avg_cost", "public_marginal_cost", "server_marginal_cost"])
         for (scenario, year, region), values in sorted(data.items()):
             writer.writerow([scenario, year, region, *values])
     print(f"Wrote {len(data)} rows to {out} ({out.stat().st_size:,} bytes)")

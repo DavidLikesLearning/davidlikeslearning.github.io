@@ -4,6 +4,11 @@ const SCENARIOS = {
   covered_50: 'Servers, 50% covered', covered_100: 'Servers, 100% covered'
 };
 const METRICS = {
+  public_avg_cost: {label:'Average public cost',unit:'$/MWh',digits:1,rate:true},
+  server_avg_cost: {label:'Average server cost',unit:'$/MWh',digits:1,rate:true},
+  public_marginal_cost: {label:'Public marginal cost (duals)',unit:'$/MWh',digits:1,rate:true},
+  server_marginal_cost: {label:'Server marginal cost (duals)',unit:'$/MWh',digits:1,rate:true},
+
   solar_gw: {label:'Solar capacity',unit:'GW',digits:1},
   wind_gw: {label:'Wind capacity',unit:'GW',digits:1},
   hydro_gw: {label:'Hydro capacity',unit:'GW',digits:1},
@@ -29,9 +34,9 @@ function parseCSV(csv) {
   return lines.map(line => Object.fromEntries(line.split(',').map((v,i) => [keys[i],v])));
 }
 function key(scenario,year,region){return `${scenario}|${year}|${region}`}
-function raw(scenario,region){return Number(records.get(key(scenario,state.year,region))?.[state.metric] ?? NaN)}
+function raw(scenario,region){const v=records.get(key(scenario,state.year,region))?.[state.metric];return v==null||v===''?NaN:Number(v)}
 function value(region){const a=raw(state.scenario,region);return state.compare==='none'?a:a-raw(state.compare,region)}
-function format(n,plus=false){return `${plus&&n>0?'+':''}${n.toLocaleString(undefined,{maximumFractionDigits:METRICS[state.metric].digits,minimumFractionDigits:1})}`}
+function format(n,plus=false){if(!Number.isFinite(n))return 'N/A';return `${plus&&n>0?'+':''}${n.toLocaleString(undefined,{maximumFractionDigits:METRICS[state.metric].digits,minimumFractionDigits:1})}`}
 function clamp(x){return Math.min(1,Math.max(0,x))}
 function blend(a,b,t){return `rgb(${a.map((v,i)=>Math.round(v+(b[i]-v)*t)).join(',')})`}
 function color(v,limit,diverge){
@@ -89,14 +94,14 @@ function renderMap(limit,diverge){
 }
 function renderBars(limit,diverge){
   const box=$('bars');box.replaceChildren();
-  const ordered=[...regions].sort((a,b)=>value(b)-value(a));
+  const ordered=[...regions].sort((a,b)=>(Number.isFinite(value(b))?value(b):-Infinity)-(Number.isFinite(value(a))?value(a):-Infinity));
   for(const region of ordered){
     const n=value(region),row=document.createElement('div');row.className='bar-row'+(region===state.region?' selected':'');row.dataset.region=region;
     row.setAttribute('role','button');row.setAttribute('tabindex','0');row.setAttribute('aria-label',`${region}: ${format(n,state.compare!=='none')} ${METRICS[state.metric].unit}`);
     const name=document.createElement('span');name.className='bar-name';name.textContent=region;
     const track=document.createElement('div');track.className='bar-track';const zero=diverge?50:0;track.style.setProperty('--zero',`${zero}%`);
-    const fill=document.createElement('div');fill.className='bar-fill';const width=diverge?Math.abs(n)/limit*50:Math.max(0,n)/limit*100;
-    fill.style.left=`${diverge&&n<0?50-width:zero}%`;fill.style.width=`${width}%`;fill.style.background=color(n,limit,diverge);track.append(fill);
+    const fill=document.createElement('div');fill.className='bar-fill';const width=!Number.isFinite(n)?0:diverge?Math.abs(n)/limit*50:Math.max(0,n)/limit*100;
+    fill.style.left=`${diverge&&n<0?50-width:zero}%`;fill.style.width=`${width}%`;fill.style.background='#0d695e';track.append(fill);
     const num=document.createElement('span');num.className='bar-number';num.textContent=format(n,state.compare!=='none');row.append(name,track,num);
     row.addEventListener('click',()=>selectRegion(region));row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectRegion(region)}});box.append(row);
   }
@@ -104,22 +109,23 @@ function renderBars(limit,diverge){
 function render(){
   if(!geography)return;
   const metric=METRICS[state.metric],compare=state.compare!=='none';
-  const vals=regions.map(value),diverge=compare||state.metric==='net_exports_twh';
+  const vals=regions.map(value).filter(Number.isFinite),diverge=compare||state.metric==='net_exports_twh';
   const limit=Math.max(...vals.map(v=>diverge?Math.abs(v):v),.001);
-  $('chart-kicker').textContent=compare?'Scenario difference':'Regional values';
   $('chart-title').textContent=`${metric.label} · ${state.year}`;
   $('chart-subtitle').textContent=compare?`${SCENARIOS[state.scenario]} minus ${SCENARIOS[state.compare]}`:SCENARIOS[state.scenario];
-  if(state.metric==='net_exports_twh'){$('national').hidden=true}else{
+  if(state.metric.endsWith('avg_cost'))$('chart-subtitle').textContent+=' · PV average, 2027–2044 (all model periods)';
+  if(state.metric==='net_exports_twh'||metric.rate){$('national').hidden=true}else{
     $('national').hidden=false;const total=vals.reduce((a,b)=>a+b,0);
     $('national').innerHTML=`<strong>${format(total,compare)} ${metric.unit}</strong><span>${compare?'Sum of regional differences':'Sum across 26 regions'}</span>`;
   }
   renderMap(limit,diverge);renderBars(limit,diverge);renderDetail();
+  document.querySelector('.legend').hidden=state.view!=='map';
   $('map-panel').hidden=state.view!=='map';$('bars-panel').hidden=state.view!=='bars';
   $('map-tab').classList.toggle('active',state.view==='map');$('bars-tab').classList.toggle('active',state.view==='bars');
   $('map-tab').setAttribute('aria-pressed',state.view==='map');$('bars-tab').setAttribute('aria-pressed',state.view==='bars');
   $('gradient').style.background=diverge?'linear-gradient(90deg,#1d5fa8,#f7f7f7 50%,#f2b705)':'linear-gradient(90deg,#ebf2eb,#0d695e)';
   $('legend-low').textContent=diverge?format(-limit):'0';$('legend-high').textContent=format(limit);
-  $('legend-note').textContent=`${metric.unit} · ${diverge?(compare?'blue = lower in selected scenario; gold = higher in selected scenario':'blue = net importer; gold = net exporter'):'darker green = higher value'}`;
+  $('legend-note').textContent=state.view==='bars'?`${metric.unit} · bar length shows value; N/A = unavailable`:`${metric.unit} · ${diverge?(compare?'blue = lower in selected scenario; gold = higher in selected scenario':'blue = net importer; gold = net exporter'):'darker green = higher value'}`;
   const params=new URLSearchParams({metric:state.metric,year:state.year,scenario:state.scenario,compare:state.compare,view:state.view});
   if(state.region)params.set('region',state.region);history.replaceState(null,'',`?${params}`);
 }
