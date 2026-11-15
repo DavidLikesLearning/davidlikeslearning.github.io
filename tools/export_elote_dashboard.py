@@ -29,13 +29,21 @@ def family(tech):
     if tech.startswith(("battery", "batteries", "hydroelectric_pumped")):
         return "battery"
     if "geothermal" in tech:
-        return "clean"
+        return "geothermal"
     if "nuclear" in tech:
-        return "clean"
+        return "nuclear"
     if "hydro" in tech:
-        return "clean"
-    if tech.startswith(("utilitypv", "solar")) or "wind" in tech:
-        return "clean"
+        return "hydro"
+    if tech.startswith(("utilitypv", "solar")):
+        return "solar"
+    if "wind" in tech:
+        return "wind"
+    if "coal" in tech:
+        return "coal"
+    if any(x in tech for x in ("natural_gas", "naturalgas", "ng_")):
+        return "gas"
+    if "biomass" in tech:
+        return "biomass"
     if any(x in tech for x in ("coal", "natural_gas", "naturalgas", "ng_", "biomass", "petroleum_liquids")) or tech.startswith("distributed_generation"):
         return "other"
     return None
@@ -65,21 +73,22 @@ def export():
             incoming = transmission.groupby("destination")[year].sum()
             for region in regions:
                 value = lambda kind: float(caps.get((region, kind), 0)) / 1000
-                clean = value("clean")
+                clean = sum(value(k) for k in ("solar", "wind", "hydro", "geothermal", "nuclear"))
                 battery = value("battery")
-                other = value("other")
+                other = sum(value(k) for k in ("other", "coal", "gas", "biomass"))
                 data[scenario, year, region] = [
                     round(clean + battery + other, 5),
                     round(clean, 5),
                     round(battery, 5),
                     round((float(outgoing.get(region, 0)) - float(incoming.get(region, 0))) / 1e6, 5),
                     round(float(co2.get(region, 0)) / 1e6, 5),
+                    *[round(value(k), 5) for k in ("solar", "wind", "hydro", "geothermal", "nuclear", "coal", "gas", "biomass", "other")],
                 ]
     out = SITE / "data" / "elote-regions.csv"
     out.parent.mkdir(exist_ok=True)
     with out.open("w", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow(["scenario", "year", "region", "capacity_gw", "clean_gw", "battery_gw", "net_exports_twh", "co2_mt"])
+        writer = csv.writer(f, lineterminator="\n")
+        writer.writerow(["scenario", "year", "region", "capacity_gw", "clean_gw", "battery_gw", "net_exports_twh", "co2_mt", *[k + "_gw" for k in ("solar", "wind", "hydro", "geothermal", "nuclear", "coal", "gas", "biomass", "other")]])
         for (scenario, year, region), values in sorted(data.items()):
             writer.writerow([scenario, year, region, *values])
     print(f"Wrote {len(data)} rows to {out} ({out.stat().st_size:,} bytes)")

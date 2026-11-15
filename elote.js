@@ -4,6 +4,16 @@ const SCENARIOS = {
   covered_50: 'Servers, 50% covered', covered_100: 'Servers, 100% covered'
 };
 const METRICS = {
+  solar_gw: {label:'Solar capacity',unit:'GW',digits:1},
+  wind_gw: {label:'Wind capacity',unit:'GW',digits:1},
+  hydro_gw: {label:'Hydro capacity',unit:'GW',digits:1},
+  geothermal_gw: {label:'Geothermal capacity',unit:'GW',digits:1},
+  nuclear_gw: {label:'Nuclear capacity',unit:'GW',digits:1},
+  coal_gw: {label:'Coal capacity',unit:'GW',digits:1},
+  gas_gw: {label:'Natural gas capacity',unit:'GW',digits:1},
+  biomass_gw: {label:'Biomass capacity',unit:'GW',digits:1},
+  other_gw: {label:'Other generation capacity',unit:'GW',digits:1},
+
   capacity_gw: {label:'Generation & storage capacity',unit:'GW',digits:1},
   clean_gw: {label:'Clean generation capacity',unit:'GW',digits:1},
   battery_gw: {label:'Battery capacity',unit:'GW',digits:1},
@@ -26,7 +36,7 @@ function clamp(x){return Math.min(1,Math.max(0,x))}
 function blend(a,b,t){return `rgb(${a.map((v,i)=>Math.round(v+(b[i]-v)*t)).join(',')})`}
 function color(v,limit,diverge){
   if(!Number.isFinite(v))return '#d6ddd7';
-  if(diverge){const t=clamp(Math.abs(v)/limit);return v<0?blend([247,248,244],[40,102,164],t):blend([247,248,244],[221,167,42],t)}
+  if(diverge){const t=clamp(Math.abs(v)/limit);return v<0?blend([247,247,247],[29,95,168],t):blend([247,247,247],[242,183,5],t)}
   return blend([235,242,235],[13,105,94],clamp(v/limit));
 }
 function ringPath(ring){return ring.map(([lon,lat],i)=>`${i?'L':'M'}${(lon+126)*16.1},${(51-lat)*17.8}`).join('')+'Z'}
@@ -59,9 +69,23 @@ function renderMap(limit,diverge){
     path.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectRegion(region)}});
     const title=document.createElementNS(ns,'title');title.textContent=`${region}: ${format(value(region),state.compare!=='none')} ${METRICS[state.metric].unit}`;path.append(title);svg.append(path);
   }
-  if(state.region){const feature=geography.features.find(f=>f.properties.model_region===state.region);if(feature){
-    const [x,y]=labelPoint(feature.geometry);const t=document.createElementNS(ns,'text');t.setAttribute('x',x);t.setAttribute('y',y);t.setAttribute('text-anchor','middle');t.setAttribute('class','region-label');t.textContent=state.region;svg.append(t);
-  }}
+  // Keep labels visible and separate nearby northeastern zones.
+  const labels=[];
+  for(const feature of geography.features){
+    const r=feature.properties.model_region;if(!regions.includes(r))continue;
+    let [x,y]=labelPoint(feature.geometry);
+    labels.push({r,x,y,ax:x,ay:y});
+  }
+  for(let pass=0;pass<100;pass++)for(let i=0;i<labels.length;i++)for(let j=i+1;j<labels.length;j++){
+    const a=labels[i],b=labels[j],dx=b.x-a.x,dy=b.y-a.y;
+    if(Math.abs(dx)<60&&Math.abs(dy)<34){const shift=(34-Math.abs(dy))/2+.1; a.y-=dy>=0?shift:-shift;b.y+=dy>=0?shift:-shift;}
+  }
+  for(const {r,x,y,ax,ay} of labels){
+    if(Math.hypot(x-ax,y-ay)>10){const line=document.createElementNS(ns,'line');for(const [k,v] of Object.entries({x1:ax,y1:ay,x2:x,y2:y,stroke:'#777','stroke-width':.7}))line.setAttribute(k,v);svg.append(line)}
+    const t=document.createElementNS(ns,'text');t.setAttribute('x',x);t.setAttribute('y',y);t.setAttribute('text-anchor','middle');t.setAttribute('class','region-label');
+    const name=document.createElementNS(ns,'tspan');name.textContent=r;name.setAttribute('x',x);
+    const n=document.createElementNS(ns,'tspan');n.textContent=format(value(r),diverge);n.setAttribute('x',x);n.setAttribute('dy','1.15em');t.append(name,n);svg.append(t);
+  }
 }
 function renderBars(limit,diverge){
   const box=$('bars');box.replaceChildren();
@@ -93,7 +117,7 @@ function render(){
   $('map-panel').hidden=state.view!=='map';$('bars-panel').hidden=state.view!=='bars';
   $('map-tab').classList.toggle('active',state.view==='map');$('bars-tab').classList.toggle('active',state.view==='bars');
   $('map-tab').setAttribute('aria-pressed',state.view==='map');$('bars-tab').setAttribute('aria-pressed',state.view==='bars');
-  $('gradient').style.background=diverge?'linear-gradient(90deg,#2866a4,#f7f8f4 50%,#dda72a)':'linear-gradient(90deg,#ebf2eb,#0d695e)';
+  $('gradient').style.background=diverge?'linear-gradient(90deg,#1d5fa8,#f7f7f7 50%,#f2b705)':'linear-gradient(90deg,#ebf2eb,#0d695e)';
   $('legend-low').textContent=diverge?format(-limit):'0';$('legend-high').textContent=format(limit);
   $('legend-note').textContent=`${metric.unit} · ${diverge?(compare?'blue = lower in selected scenario; gold = higher in selected scenario':'blue = net importer; gold = net exporter'):'darker green = higher value'}`;
   const params=new URLSearchParams({metric:state.metric,year:state.year,scenario:state.scenario,compare:state.compare,view:state.view});

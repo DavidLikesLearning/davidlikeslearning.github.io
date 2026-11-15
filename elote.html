@@ -27,6 +27,15 @@
       <div class="control"><label for="metric">Metric</label><select id="metric">
         <option value="capacity_gw">Generation & storage capacity · GW</option>
         <option value="clean_gw">Clean generation capacity · GW</option>
+        <option value="solar_gw">Solar capacity · GW</option>
+        <option value="wind_gw">Wind capacity · GW</option>
+        <option value="hydro_gw">Hydro capacity · GW</option>
+        <option value="geothermal_gw">Geothermal capacity · GW</option>
+        <option value="nuclear_gw">Nuclear capacity · GW</option>
+        <option value="coal_gw">Coal capacity · GW</option>
+        <option value="gas_gw">Natural gas capacity · GW</option>
+        <option value="biomass_gw">Biomass capacity · GW</option>
+        <option value="other_gw">Other generation capacity · GW</option>
         <option value="battery_gw">Battery capacity · GW</option>
         <option value="net_exports_twh">Net electricity exports · TWh/yr</option>
         <option value="co2_mt">CO₂ emissions · Mt/yr</option>
@@ -64,6 +73,7 @@
       <p id="legend-note" class="legend-note"></p>
       <div class="region-detail" aria-live="polite"><div><span class="eyebrow">Selected region</span><h3 id="detail-region">Select a region</h3></div><div id="detail-value"></div></div>
     </section>
+<section class="figure-gallery" aria-label="Supporting analyses"><article><h2>How matching changes electricity trade</h2><p>These maps compare net regional electricity exports in 2040 with unregulated servers and with full New-Build 3P coverage. Gold marks net exporters and blue marks net importers; both panels use the same scale. Labels report annual net exports and regional demand (D), in TWh. The view shows how hourly, local matching reshapes reliance on electricity traded between regions.</p><figure><a href="data/figures/elote_net_exports_unregulated_vs_newbuild3p_map_wide.png" target="_blank" rel="noopener"><img src="data/figures/elote_net_exports_unregulated_vs_newbuild3p_map_wide.png" alt="How matching changes electricity trade" loading="lazy" width="1500"></a><figcaption>Open the figure to inspect the full-size labels.</figcaption></figure></article><article><h2>Sensitivity to input assumptions</h2><p>The sensitivity analysis varies one input at a time: fuel prices, technology capital costs, data-center load, and other electricity demand. It measures changes in average system cost, 2040 demand-weighted marginal electricity cost, and 2040 CO₂ emissions. Natural gas prices have the largest cost response among the assumptions tested.</p><figure><a href="data/figures/pawpaw_sensitivity_tornado.png" target="_blank" rel="noopener"><img src="data/figures/pawpaw_sensitivity_tornado.png" alt="Sensitivity to input assumptions" loading="lazy" width="1500"></a><figcaption>Open the figure to inspect the full-size labels.</figcaption></figure></article><article><h2>Checking dispatch against network constraints</h2><p>DC optimal power flow (DC OPF) tests the generation portfolios on the synthetic Texas ACTIVSg2000 network, calibrated to 2025 load and generation. The comparison tracks renewable curtailment, gas generation, operating costs, and congested lines through 2040, with an unconstrained network benchmark to isolate the effect of transmission limits.</p><figure><a href="data/figures/dcopf_texas_asis_baseline_vs_newbuild3p.png" target="_blank" rel="noopener"><img src="data/figures/dcopf_texas_asis_baseline_vs_newbuild3p.png" alt="Checking dispatch against network constraints" loading="lazy" width="1500"></a><figcaption>Open the figure to inspect the full-size labels.</figcaption></figure></article><article><h2>Transmission expansion and validation</h2><p>The expansion analysis adds line and transformer capacity to accommodate the modeled portfolios, then reruns hourly dispatch on the expanded network. These results show the network additions and the remaining operational effects for baseline and New-Build 3P portfolios.</p><figure><a href="data/figures/dcopf_texas_tep_baseline_vs_newbuild3p.png" target="_blank" rel="noopener"><img src="data/figures/dcopf_texas_tep_baseline_vs_newbuild3p.png" alt="Transmission expansion and validation" loading="lazy" width="1500"></a><figcaption>Open the figure to inspect the full-size labels.</figcaption></figure></article></section>
     <section class="notes">
       <h2>Reading the results</h2>
       <p>Each region is one model zone, not a state. In comparison mode, the chart shows <strong>selected scenario − comparison scenario</strong>. A positive value means the selected scenario is higher. For net exports, positive means more electricity exported than imported.</p>
